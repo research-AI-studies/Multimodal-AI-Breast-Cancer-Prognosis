@@ -41,17 +41,11 @@ from src.analysis.survival_analysis import (
 )
 from src.analysis.shap_analysis import compute_shap_values
 from src.analysis.subgroup_analysis import her2_subgroup_analysis, depression_subgroup_analysis
-from src.visualization.km_plots import generate_all_km_figures
-from src.visualization.calibration_plots import generate_calibration_figures
-from src.visualization.tables import generate_all_tables
 
 
 def main(skip_tune: bool = False):
     start = time.time()
     np.random.seed(config.RANDOM_SEED)
-    os.makedirs(config.FIGURES_DIR, exist_ok=True)
-    os.makedirs(config.TABLES_DIR, exist_ok=True)
-    os.makedirs(config.METRICS_DIR, exist_ok=True)
 
     all_results = {}
 
@@ -210,29 +204,9 @@ def main(skip_tune: bool = False):
     depression_results = depression_subgroup_analysis(df)
     all_results["depression_results"] = depression_results
 
-    # ── Phase 10: Generate Figures ────────────────────────────────────────
+    # ── Phase 10: Collect Final Metrics ──────────────────────────────────
     print("\n" + "="*70)
-    print("PHASE 10: GENERATING FIGURES")
-    print("="*70)
-
-    km_p_values = generate_all_km_figures(df)
-
-    # Compute TNM and Charlson proxy probabilities for calibration comparison
-    tnm_proba = _compute_tnm_proxy(df, feat_cols_used)
-    charlson_proba = _compute_charlson_proxy(df)
-
-    generate_calibration_figures(
-        y_true=y_mort,
-        multimodal_proba=ensemble_proba,
-        tnm_proba=tnm_proba,
-        charlson_proba=charlson_proba,
-        recurrence_true=df["recurrence"].values,
-        recurrence_proba=xgb_proba * 0.9 + np.random.RandomState(42).normal(0, 0.02, len(xgb_proba)),
-    )
-
-    # ── Phase 11: Collect Final Metrics ───────────────────────────────────
-    print("\n" + "="*70)
-    print("PHASE 11: COLLECTING FINAL METRICS")
+    print("PHASE 10: COLLECTING FINAL METRICS")
     print("="*70)
 
     cal = compute_calibration(y_mort, ensemble_proba)
@@ -255,31 +229,17 @@ def main(skip_tune: bool = False):
     all_results["final_metrics"] = final_metrics
     all_results["strat_metrics"] = {
         "mortality_ratio": round(mortality_ratio, 2),
-        "logrank_p": km_p_values.get("fig9_risk", ""),
         "high_risk_neoadj": config.TARGET_METRICS["high_risk_neoadjuvant_pct"],
         "low_risk_neoadj": config.TARGET_METRICS["low_risk_neoadjuvant_pct"],
         "recurrence_reduction": config.TARGET_METRICS["recurrence_reduction_pct"],
     }
 
-    # Save metrics JSON
-    with open(os.path.join(config.METRICS_DIR, "all_metrics.json"), "w") as f:
-        json.dump(final_metrics, f, indent=2, default=str)
     print(f"\nFinal Metrics: {json.dumps(final_metrics, indent=2, default=str)}")
-
-    # ── Phase 12: Generate Tables ─────────────────────────────────────────
-    print("\n" + "="*70)
-    print("PHASE 12: GENERATING TABLES")
-    print("="*70)
-
-    generate_all_tables(all_results)
 
     # ── Done ──────────────────────────────────────────────────────────────
     elapsed = time.time() - start
     print("\n" + "="*70)
     print(f"PIPELINE COMPLETE - {elapsed:.1f}s")
-    print(f"Figures: {config.FIGURES_DIR}")
-    print(f"Tables:  {config.TABLES_DIR}")
-    print(f"Metrics: {config.METRICS_DIR}")
     print("="*70)
 
     return all_results

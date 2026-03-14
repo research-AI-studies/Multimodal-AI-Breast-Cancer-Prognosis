@@ -14,9 +14,6 @@ RAW_DATA_PATH = os.environ.get(
     os.path.join(BASE_DIR, "data", "Data_PROM_Baseline_updateCF.xlsx"),
 )
 OUTPUT_DIR = os.path.join(BASE_DIR, "outputs")
-FIGURES_DIR = os.path.join(OUTPUT_DIR, "figures")
-TABLES_DIR = os.path.join(OUTPUT_DIR, "tables")
-METRICS_DIR = os.path.join(OUTPUT_DIR, "metrics")
 
 # ---------------------------------------------------------------------------
 # Reproducibility
