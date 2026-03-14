@@ -6,7 +6,7 @@ Code repository for: *"Multimodal machine learning for precision oncology: integ
 
 ## Overview
 
-This repository contains all custom code used to preprocess data, train the multimodal machine learning models (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO, Kaplan-Meier stratifier, RMSE optimizer), and produce all figures and results reported in the study.
+This repository contains all custom algorithms and code used to preprocess data, train the multimodal machine learning models (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO, Kaplan-Meier stratifier, RMSE optimizer), and perform all analyses reported in the study.
 
 ## Requirements
 
@@ -45,11 +45,11 @@ Survival endpoints in this analysis are derived from a prognostic risk model cal
 
 ## Code Availability Statement (for paper Section 3.8)
 
-> All custom code used for data preprocessing, multimodal feature engineering, prognostic risk modeling, machine learning model training (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO), evaluation, and figure output is publicly available at https://doi.org/10.5281/zenodo.19021854. The prognostic risk model derives survival endpoints using a Weibull proportional hazards framework calibrated to published breast cancer survival statistics, following established methodology (cf. PREDICT, Wishart et al., 2010). The repository includes all preprocessing scripts, model training pipelines, cross-validation protocols, and visualization code. No restrictions apply to access.
+> All custom code used for data preprocessing, multimodal feature engineering, prognostic risk modeling, and machine learning model training (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO) is publicly available at https://doi.org/10.5281/zenodo.19021854. The prognostic risk model derives survival endpoints using a Weibull proportional hazards framework calibrated to published breast cancer survival statistics, following established methodology (cf. PREDICT, Wishart et al., 2010). The repository includes all preprocessing scripts, model training pipelines, cross-validation protocols, and evaluation code. No restrictions apply to access.
 
-## Reproducing Results
+## Usage
 
-Run the full pipeline with a single command:
+Run the full pipeline:
 
 ```bash
 python main.py
@@ -61,53 +61,35 @@ To skip Optuna hyperparameter tuning (faster, uses default parameters from the p
 python main.py --skip-tune
 ```
 
-### Output
-
-All outputs are saved to the `outputs/` directory:
-
-| Directory         | Contents                                     |
-|-------------------|----------------------------------------------|
-| `outputs/figures/`| All 13 figures (PNG + PDF, 300 dpi)          |
-| `outputs/tables/` | All 15 tables (CSV format)                   |
-| `outputs/metrics/`| JSON files with all numerical results        |
-
 ## Project Structure
 
 ```
 code/
-├── main.py                  # Single entry point
-├── config.py                # All constants, seeds, hyperparameters
-├── requirements.txt         # Python dependencies
-├── README.md                # This file
+├── main.py                    # Single entry point
+├── config.py                  # All constants, seeds, hyperparameters
+├── requirements.txt           # Python dependencies
+├── README.md
 ├── src/
-│   ├── data_loading.py      # Load and validate raw data
-│   ├── preprocessing.py     # MICE imputation, normalization, encoding
+│   ├── data_loading.py        # Load and validate raw data
+│   ├── preprocessing.py       # MICE imputation, normalization, encoding
 │   ├── feature_engineering.py # Interaction terms, comorbidity burden
-│   ├── prognostic_model.py  # Prognostic risk estimation (Weibull PH)
+│   ├── prognostic_model.py    # Prognostic risk estimation (Weibull PH)
 │   ├── models/
-│   │   ├── xgboost_model.py # XGBoost + Bayesian tuning
-│   │   ├── dnn_model.py     # 5-layer DNN (PyTorch)
-│   │   ├── cox_model.py     # Cox proportional hazards
-│   │   ├── ensemble_model.py # Stacked ensemble
-│   │   ├── lasso_model.py   # LASSO feature selection
-│   │   ├── km_stratifier.py # KM risk stratification
-│   │   └── rmse_optimizer.py # PRO regression
+│   │   ├── xgboost_model.py   # XGBoost + Bayesian tuning
+│   │   ├── dnn_model.py       # 5-layer DNN (PyTorch)
+│   │   ├── cox_model.py       # Cox proportional hazards
+│   │   ├── ensemble_model.py  # Stacked ensemble
+│   │   ├── lasso_model.py     # LASSO feature selection
+│   │   ├── km_stratifier.py   # KM risk stratification
+│   │   └── rmse_optimizer.py  # PRO regression
 │   ├── evaluation/
-│   │   ├── metrics.py       # AUC, F1, RMSE, C-index, Brier, calibration
+│   │   ├── metrics.py         # AUC, F1, RMSE, C-index, Brier, calibration
 │   │   ├── cross_validation.py # 5-fold stratified CV
-│   │   └── ablation.py      # Feature masking ablation studies
-│   ├── analysis/
-│   │   ├── survival_analysis.py  # Cox HRs, KM curves
-│   │   ├── shap_analysis.py      # SHAP feature importance
-│   │   └── subgroup_analysis.py  # HER2, depression subgroups
-│   └── visualization/
-│       ├── km_plots.py           # Figures 3-9
-│       ├── calibration_plots.py  # Figures 10-13
-│       └── tables.py             # All 15 tables
-└── outputs/
-    ├── figures/
-    ├── tables/
-    └── metrics/
+│   │   └── ablation.py        # Feature masking ablation studies
+│   └── analysis/
+│       ├── survival_analysis.py  # Cox HRs, KM curves
+│       ├── shap_analysis.py      # SHAP feature importance
+│       └── subgroup_analysis.py  # HER2, depression subgroups
 ```
 
 ## Reproducibility
@@ -118,7 +100,7 @@ All stochastic operations use `RANDOM_SEED = 42` (defined in `config.py`). The p
 
 If you use this code, please cite the associated paper and the original dataset:
 
-- Dataset: Charité Breast Cancer Dataset, Mendeley Data, DOI: 10.17632/wrhr5862cb.4
+- Dataset: Charite Breast Cancer Dataset, Mendeley Data, DOI: 10.17632/wrhr5862cb.4
 - License: Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 ## License
