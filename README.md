@@ -1,5 +1,7 @@
 # Multimodal Machine Learning for Breast Cancer Prognosis
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19021854.svg)](https://doi.org/10.5281/zenodo.19021854)
+
 Code repository for: *"Multimodal machine learning for precision oncology: integrating clinical and comorbidity data to predict breast cancer prognosis and treatment outcomes"*
 
 ## Overview
@@ -43,7 +45,7 @@ Survival endpoints in this analysis are derived from a prognostic risk model cal
 
 ## Code Availability Statement (for paper Section 3.8)
 
-> All custom code used for data preprocessing, multimodal feature engineering, prognostic risk modeling, machine learning model training (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO), evaluation, and figure output is publicly available at [Zenodo DOI]. The prognostic risk model derives survival endpoints using a Weibull proportional hazards framework calibrated to published breast cancer survival statistics, following established methodology (cf. PREDICT, Wishart et al., 2010). The repository includes all preprocessing scripts, model training pipelines, cross-validation protocols, and visualization code. No restrictions apply to access.
+> All custom code used for data preprocessing, multimodal feature engineering, prognostic risk modeling, machine learning model training (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO), evaluation, and figure output is publicly available at https://doi.org/10.5281/zenodo.19021854. The prognostic risk model derives survival endpoints using a Weibull proportional hazards framework calibrated to published breast cancer survival statistics, following established methodology (cf. PREDICT, Wishart et al., 2010). The repository includes all preprocessing scripts, model training pipelines, cross-validation protocols, and visualization code. No restrictions apply to access.
 
 ## Reproducing Results
 
