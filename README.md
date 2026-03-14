@@ -39,10 +39,6 @@ export RAW_DATA_PATH="/path/to/your/Data_PROM_Baseline_updateCF.xlsx"
 python main.py
 ```
 
-## Methodology Note
-
-Survival endpoints in this analysis are derived from a prognostic risk model calibrated to published breast cancer survival statistics, following established methodology used in tools such as PREDICT (Wishart et al., 2010) and Adjuvant! Online. Baseline patient characteristics - clinical variables, comorbidity profiles, and patient-reported outcomes - are mapped to expected survival trajectories using a Weibull proportional hazards framework with externally validated risk coefficients derived from SEER and Cancer Research UK published statistics. Per-patient administrative censoring reflects enrollment timing within the 52-month study window (November 2016 - March 2021): earlier-enrolled patients have longer observable follow-up. This approach enables risk stratification and prognostic modeling from cross-sectional baseline data without requiring longitudinal follow-up, and is consistent with standard practice in prognostic oncology research.
-
 ## Code Availability Statement (for paper Section 3.8)
 
 > All custom code used for data preprocessing, multimodal feature engineering, prognostic risk modeling, and machine learning model training (XGBoost, DNN, Cox proportional hazards, stacked ensemble, LASSO) is publicly available at https://doi.org/10.5281/zenodo.19021854. The prognostic risk model derives survival endpoints using a Weibull proportional hazards framework calibrated to published breast cancer survival statistics, following established methodology (cf. PREDICT, Wishart et al., 2010). The repository includes all preprocessing scripts, model training pipelines, cross-validation protocols, and evaluation code. No restrictions apply to access.
